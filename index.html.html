@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gigi Tabatadze</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-dark: #1a1a1a;
+      --text-light: #ffffff;
+      --text-secondary: #cccccc;
+      --border: #333333;
+      --accent-pink: #ffb3d9;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+
+    /* ===== NAVIGATION ===== */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 40px;
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      z-index: 1000;
+    }
+
+    .nav-logo {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--text-light);
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      transition: color 0.2s ease;
+    }
+
+    .nav-logo:hover {
+      color: var(--accent-pink);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .hamburger {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 8px;
+    }
+
+    .hamburger span {
+      width: 20px;
+      height: 1.5px;
+      background: var(--text-light);
+      display: block;
+      transition: all 0.3s ease;
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(8px, 8px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px);
+    }
+
+    .instagram-link {
+      font-size: 16px;
+      color: var(--text-light);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .instagram-link:hover {
+      color: var(--accent-pink);
+    }
+
+    .nav-menu {
+      display: none;
+      position: absolute;
+      top: 40px;
+      right: 40px;
+      background: var(--bg-dark);
+      border: 1px solid var(--border);
+      border-top: none;
+      min-width: 180px;
+      flex-direction: column;
+      z-index: 999;
+    }
+
+    .nav-menu.active {
+      display: flex;
+    }
+
+    .nav-menu button {
+      padding: 12px 20px;
+      background: none;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-light);
+      cursor: pointer;
+      text-align: left;
+      font-size: 12px;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      font-weight: 500;
+      letter-spacing: 1px;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-menu button:last-child {
+      border-bottom: none;
+    }
+
+    .nav-menu button:hover {
+      background: transparent;
+      color: var(--accent-pink);
+    }
+
+    .nav-menu .instagram-link {
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid var(--border);
+      font-size: 16px;
+      text-decoration: none;
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      margin-top: 40px;
+      background: var(--bg-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-carousel {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+
+    .hero-image {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .hero-image.active {
+      opacity: 1;
+    }
+
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* ===== GALLERY SECTION ===== */
+    .gallery-section {
+      display: none;
+      padding: 0 40px;
+      background: var(--bg-dark);
+      margin-top: 40px;
+      min-height: calc(100vh - 40px);
+      padding-top: 70px;
+      padding-bottom: 60px;
+    }
+
+    .gallery-section.active {
+      display: block;
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 40px;
+      color: var(--text-light);
+      text-transform: uppercase;
+    }
+
+    /* Grid: 7-10 columns responsive */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+
+    @media (max-width: 1920px) {
+      .gallery {
+        grid-template-columns: repeat(9, 1fr);
+      }
+    }
+
+    @media (max-width: 1600px) {
+      .gallery {
+        grid-template-columns: repeat(8, 1fr);
+      }
+    }
+
+    @media (max-width: 1300px) {
+      .gallery {
+        grid-template-columns: repeat(7, 1fr);
+      }
+    }
+
+    @media (max-width: 1100px) {
+      .gallery {
+        grid-template-columns: repeat(6, 1fr);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .gallery {
+        grid-template-columns: repeat(5, 1fr);
+      }
+    }
+
+    @media (max-width: 700px) {
+      .gallery {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .gallery {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+    }
+
+    /* Photo Items */
+    .photo-item {
+      position: relative;
+      background: var(--border);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      aspect-ratio: 1;
+    }
+
+    .photo-item:hover {
+      opacity: 0.8;
+    }
+
+    .photo-wrapper {
+      flex: 1;
+      overflow: hidden;
+      background: var(--border);
+      width: 100%;
+      height: 100%;
+    }
+
+    .photo-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.2s ease;
+    }
+
+    .photo-item:hover img {
+      transform: scale(1.02);
+    }
+
+    /* ===== LIGHTBOX ===== */
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox.active {
+      display: flex;
+    }
+
+    .lightbox-content {
+      position: relative;
+      max-width: 90%;
+      max-height: 90%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .lightbox img {
+      max-width: 100%;
+      max-height: 80vh;
+      object-fit: contain;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      font-size: 32px;
+      cursor: pointer;
+      color: white;
+      background: none;
+      border: none;
+      padding: 0;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s ease;
+    }
+
+    .lightbox-close:hover {
+      opacity: 0.7;
+    }
+
+    .lightbox-nav {
+      position: absolute;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    .lightbox-nav button {
+      pointer-events: all;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: white;
+      padding: 12px 20px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s ease;
+      font-family: Arial, sans-serif;
+    }
+
+    .lightbox-nav button:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      nav {
+        padding: 0 20px;
+      }
+
+      .nav-logo {
+        font-size: 12px;
+      }
+
+      .nav-menu {
+        right: 20px;
+      }
+
+      .gallery-section {
+        padding: 20px;
+        padding-top: 60px;
+      }
+
+      .lightbox-close {
+        top: 20px;
+        right: 20px;
+        font-size: 24px;
+      }
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .photo-item {
+      animation: fadeIn 0.3s ease-out;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-logo" onclick="showSection('hero')">GIGI TABATADZE</div>
+    <div class="nav-right">
+      <button class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="nav-menu" id="navMenu">
+        <button onclick="showSection('gallery')">GALLERY</button>
+        <a href="https://www.instagram.com/tabatadzegigi_/" target="_blank" class="instagram-link">
+          <i class="fab fa-instagram"></i>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section with Carousel -->
+  <div class="hero" id="hero">
+    <div class="hero-carousel" id="heroCarousel">
+      <!-- Images will be added here by JavaScript -->
+    </div>
+  </div>
+
+  <!-- Gallery Section -->
+  <div class="gallery-section" id="gallery">
+    <div class="section-title">GALLERY</div>
+    <div class="gallery" id="galleryContainer"></div>
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" onclick="closeLightbox()">×</button>
+    <div class="lightbox-nav">
+      <button onclick="previousPhoto()">← Previous</button>
+      <button onclick="nextPhoto()">Next →</button>
+    </div>
+    <div class="lightbox-content">
+      <img id="lightboxImg" src="" alt="">
+    </div>
+  </div>
+
+  <script>
+    // ===== PHOTO DATA =====
+    const heroImages = [
+      'images/hero.jpg',
+      'images/hero2.jpg',
+      'images/hero3.jpg'
+    ];
+
+    const galleryPhotos = [
+      { title: 'Photo 1', src: 'images/2025/photo1.jpg' },
+      { title: 'Photo 2', src: 'images/2025/photo2.jpg' },
+      { title: 'Photo 3', src: 'images/2025/photo3.jpg' },
+      { title: 'Photo 4', src: 'images/2026/photo1.jpg' },
+      { title: 'Photo 5', src: 'images/2026/photo2.jpg' },
+    ];
+
+    let currentPhotoIndex = 0;
+    let currentHeroIndex = 0;
+    let heroInterval;
+
+    // ===== HERO CAROUSEL =====
+    function initHeroCarousel() {
+      const carousel = document.getElementById('heroCarousel');
+      heroImages.forEach((src, index) => {
+        const div = document.createElement('div');
+        div.className = 'hero-image';
+        if (index === 0) div.classList.add('active');
+        div.innerHTML = `<img src="${src}" alt="Hero ${index + 1}">`;
+        carousel.appendChild(div);
+      });
+
+      // Auto-rotate every 12 seconds
+      rotateHero();
+      heroInterval = setInterval(rotateHero, 12000);
+    }
+
+    function rotateHero() {
+      const images = document.querySelectorAll('.hero-image');
+      images.forEach(img => img.classList.remove('active'));
+      currentHeroIndex = (currentHeroIndex + 1) % images.length;
+      images[currentHeroIndex].classList.add('active');
+    }
+
+    // ===== NAVIGATION =====
+    document.getElementById('hamburger').addEventListener('click', function() {
+      this.classList.toggle('active');
+      document.getElementById('navMenu').classList.toggle('active');
+    });
+
+    function showSection(sectionId) {
+      // Close menu
+      document.getElementById('hamburger').classList.remove('active');
+      document.getElementById('navMenu').classList.remove('active');
+
+      // Hide all sections
+      document.getElementById('hero').style.display = sectionId === 'hero' ? 'flex' : 'none';
+      document.getElementById('gallery').style.display = sectionId === 'gallery' ? 'block' : 'none';
+
+      // Scroll to top
+      window.scrollTo(0, 0);
+    }
+
+    // ===== GALLERY RENDERING =====
+    function renderGallery() {
+      const gallery = document.getElementById('galleryContainer');
+      gallery.innerHTML = '';
+
+      galleryPhotos.forEach((photo, index) => {
+        const item = document.createElement('div');
+        item.className = 'photo-item';
+        item.onclick = () => openLightbox(index);
+        item.innerHTML = `
+          <div class="photo-wrapper">
+            <img src="${photo.src}" alt="${photo.title}" loading="lazy">
+          </div>
+        `;
+        gallery.appendChild(item);
+      });
+    }
+
+    // ===== LIGHTBOX =====
+    function openLightbox(index) {
+      currentPhotoIndex = index;
+      const photo = galleryPhotos[index];
+      document.getElementById('lightboxImg').src = photo.src;
+      document.getElementById('lightbox').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
+    function nextPhoto() {
+      currentPhotoIndex = (currentPhotoIndex + 1) % galleryPhotos.length;
+      document.getElementById('lightboxImg').src = galleryPhotos[currentPhotoIndex].src;
+    }
+
+    function previousPhoto() {
+      currentPhotoIndex = (currentPhotoIndex - 1 + galleryPhotos.length) % galleryPhotos.length;
+      document.getElementById('lightboxImg').src = galleryPhotos[currentPhotoIndex].src;
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (!document.getElementById('lightbox').classList.contains('active')) return;
+      if (e.key === 'ArrowRight') nextPhoto();
+      if (e.key === 'ArrowLeft') previousPhoto();
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    // Close lightbox on outside click
+    document.getElementById('lightbox').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('lightbox')) closeLightbox();
+    });
+
+    // ===== INITIALIZATION =====
+    window.addEventListener('load', () => {
+      initHeroCarousel();
+      renderGallery();
+    });
+  </script>
+</body>
+</html>
