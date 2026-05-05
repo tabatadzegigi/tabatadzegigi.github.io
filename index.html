@@ -33,7 +33,7 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 40px;
+      height: 65px;
       background: var(--bg-dark);
       border-bottom: 1px solid var(--border);
       display: flex;
@@ -44,14 +44,22 @@
     }
 
     .nav-logo {
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: 2px;
+      font-size: 200px;
+      font-weight: 400;
+      letter-spacing: 0px;
       color: var(--text-light);
       cursor: pointer;
-      font-family: Arial, sans-serif;
-      text-transform: uppercase;
+      font-family: 'Georgia', serif;
       transition: color 0.2s ease;
+      line-height: 1;
+      height: 65px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .nav-logo:hover {
+      color: var(--accent-pink);
     }
 
     .nav-logo:hover {
@@ -108,7 +116,7 @@
     .nav-menu {
       display: none;
       position: absolute;
-      top: 40px;
+      top: 65px;
       right: 40px;
       background: var(--bg-dark);
       border: 1px solid var(--border);
@@ -162,7 +170,7 @@
       position: relative;
       width: 100%;
       height: 100vh;
-      margin-top: 40px;
+      margin-top: 65px;
       background: var(--bg-dark);
       display: flex;
       align-items: center;
@@ -201,9 +209,9 @@
       display: none;
       padding: 0 40px;
       background: var(--bg-dark);
-      margin-top: 40px;
-      min-height: calc(100vh - 40px);
-      padding-top: 70px;
+      margin-top: 65px;
+      min-height: calc(100vh - 65px);
+      padding-top: 100px;
       padding-bottom: 60px;
     }
 
@@ -433,7 +441,7 @@
 <body>
   <!-- Navigation -->
   <nav>
-    <div class="nav-logo" onclick="showSection('hero')">GIGI TABATADZE</div>
+    <div class="nav-logo" onclick="showSection('hero')">გ.</div>
     <div class="nav-right">
       <button class="hamburger" id="hamburger">
         <span></span>
